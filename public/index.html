@@ -54,13 +54,15 @@
                                 <input type="password" class="form-control border-0 border-bottom" id="password"
                                     placeholder="">
                             </div>
+                            <div id="loginMessage" class="text-danger text-center mb-2"></div>
                             <button type="submit" class="btn w-100 text-white fw-bold"
                                 style="background-color: #0066cc;">LOG IN</button>
                             <div class="text-center mt-3">
                                 <a href="#" class="text-decoration-none text-primary">Forgot your password?</a>
                             </div>
                             <div class="text-center mt-2">
-                                <p>Don't have an account? <a href="#" id="openSignup" class="text-primary">Sign Up</a></p>
+                                <p>Don't have an account? <a href="#" id="openSignup" class="text-primary">Sign Up</a>
+                                </p>
                             </div>
                         </form>
                     </div>
@@ -241,13 +243,12 @@
                 id="closeSignup" style="float: right; cursor: pointer;">&times;</span>
             <h3 class="mb-3">Create an Account</h3>
             <form id="signupForm">
-                <div class="mb-2"> <input type="text" id="signupName" class="form-control" placeholder="Full Name"
-                        required> </div>
                 <div class="mb-2"> <input type="text" id="signupUsername" class="form-control" placeholder="Username"
                         required> </div>
                 <div class="mb-2"> <input type="password" id="signupPassword" class="form-control"
-                        placeholder="Password" required> </div> <button type="submit" class="btn btn-primary w-100">Sign
-                    Up</button>
+                        placeholder="Password" required> </div>
+                <div id="signupMessage" class="text-danger text-center mb-2"></div>
+                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
             </form>
         </div>
     </div>

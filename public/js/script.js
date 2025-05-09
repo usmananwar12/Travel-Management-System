@@ -22,18 +22,17 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then(response => response.json())
             .then(data => {
+                const loginMsg = document.getElementById("loginMessage");
                 if (data.success) {
-                    // Save login flag
                     localStorage.setItem('isLoggedIn', 'true');
-                    // Redirect to dashboard
                     window.location.href = 'dashboard.html';
                 } else {
-                    alert(data.message);
+                    loginMsg.textContent = data.message || "Invalid username or password.";
                 }
             })
             .catch(err => {
                 console.error('Error:', err);
-                alert('Error connecting to server.');
+                document.getElementById("loginMessage").textContent = "Error connecting to server.";
             });
     });
 
@@ -50,11 +49,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("signupForm").addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const name = document.getElementById("signupName").value.trim();
         const username = document.getElementById("signupUsername").value.trim();
         const password = document.getElementById("signupPassword").value.trim();
 
-        if (!name || !username || !password) {
+        if (!username || !password) {
             alert("Please fill in all fields.");
             return;
         }
@@ -62,20 +60,40 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch("/api/users/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, username, password })
+            body: JSON.stringify({ username, password })
         })
             .then(res => res.json())
             .then(data => {
+                const signupMsg = document.getElementById("signupMessage");
                 if (data.success) {
-                    alert("Signup successful. You can now log in.");
-                    document.getElementById("signupPopup").style.display = "none";
+                    signupMsg.classList.remove("text-danger");
+                    signupMsg.classList.add("text-success");
+                    signupMsg.textContent = "Signup successful. You can now log in.";
+                    setTimeout(() => {
+                        document.getElementById("signupPopup").style.display = "none";
+                        signupMsg.textContent = "";
+                    }, 2000);
                 } else {
-                    alert("Signup failed: " + data.message);
+                    signupMsg.classList.remove("text-success");
+                    signupMsg.classList.add("text-danger");
+                    signupMsg.textContent = "Signup failed: " + (data.message || "Please try again.");
                 }
             })
             .catch(err => {
-                alert("Error: " + err.message);
+                document.getElementById("signupMessage").textContent = "Error: " + err.message;
             });
+
+            // .then(data => {
+            //     if (data.success) {
+            //         alert("Signup successful. You can now log in.");
+            //         document.getElementById("signupPopup").style.display = "none";
+            //     } else {
+            //         alert("Signup failed: " + data.message);
+            //     }
+            // })
+            // .catch(err => {
+            //     alert("Error: " + err.message);
+            // });
     });
 
 

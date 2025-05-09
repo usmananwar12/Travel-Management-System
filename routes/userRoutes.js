@@ -20,10 +20,10 @@ router.post('/login', async (req, res) => {
 
 // Signup Route
 router.post('/register', async (req, res) => {
-    const { name, username, password } = req.body;
+    const { username, password } = req.body;
 
     // Validate input
-    if (!name || !username || !password) {
+    if (!username || !password) {
         return res.status(400).json({ success: false, message: "All fields are required." });
     }
 
@@ -35,7 +35,7 @@ router.post('/register', async (req, res) => {
         }
 
         // Save new user
-        const newUser = new User({ name, username, password });
+        const newUser = new User({ username, password });
         await newUser.save();
 
         res.status(201).json({ success: true, message: "User registered successfully." });
