@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="css/bootstrap/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/script.js"></script>
+    <link rel="icon" href="images/logo.png" type="image/png">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-color: #002147;">
+        <div class="container-fluid">
+            <img src="images/logo.png" alt="Al Zahid Madni Travels" width="50" height="50">
+            <a class="navbar-brand" href="#">Al Zahid Madni Travels</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Our Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#feedback">Feedback</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Main Content -->
+    <main id="home" class="container-fluid mt-5">
+        <div class="container-fluid mt-5"><br><br>
+            <div class="row align-items-center">
+                <!-- Login Form -->
+                <div class="col-md-6 d-flex align-items-center justify-content-center text-white">
+                    <div class="w-100" style="max-width: 350px;">
+                        <h2 class="text-center fw-bold mb-4">Welcome Back!</h2>
+                        <p class="text-center">Log in to manage your bookings and explore our travel services.</p>
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label for="username" class="form-label fw-bold">Username</label>
+                                <input type="text" class="form-control border-0 border-bottom" id="username"
+                                    placeholder="">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label fw-bold">Password</label>
+                                <input type="password" class="form-control border-0 border-bottom" id="password"
+                                    placeholder="">
+                            </div>
+                            <button type="submit" class="btn w-100 text-white fw-bold"
+                                style="background-color: #0066cc;">LOG IN</button>
+                            <div class="text-center mt-3">
+                                <a href="#" class="text-decoration-none text-primary">Forgot your password?</a>
+                            </div>
+                            <div class="text-center mt-2">
+                                <p>Don't have an account? <a href="#" id="openSignup" class="text-primary">Sign Up</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+                <!-- Right Side -->
+                <div class="col-md-6 d-flex align-items-center justify-content-center">
+                    <img src="images/pic.png" alt="Travel Illustration" class="img-fluid" style="max-width: 80%;"
+                        loading="lazy">
+                </div>
+            </div>
+        </div>
+        <!-- service Section -->
+        <section id="services" class="services-section text-white text-center">
+            <div class="container-fluid">
+                <div class="position-relative text-center mb-5">
+                    <h2 class="section-title">OUR SERVICES</h2>
+                    <div class="title-underline"></div>
+                    <h1 class="section-title-bg">OUR SERVICES</h1>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="service-card">
+                            <i class="fas fa-plane fa-3x"></i>
+                            <h3>Airline Ticketing</h3>
+                            <p>Book affordable flights with top airlines worldwide.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="service-card">
+                            <i class="fas fa-mosque fa-3x"></i>
+                            <h3>Hajj & Umrah Packages</h3>
+                            <p>Exclusive packages with guided tours for a stress-free pilgrimage.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="service-card">
+                            <i class="fas fa-hotel fa-3x"></i>
+                            <h3>Hotel Bookings</h3>
+                            <p>Comfortable accommodations according to your need near the holy sites.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="about-section text-white text-center">
+            <div class="container-fluid"><br><br><br><br>
+
+                <div class="position-relative text-center mb-5">
+                    <h2 class="section-title">ABOUT US</h2>
+                    <div class="title-underline"></div>
+                    <h1 class="section-title-bg">ABOUT US</h1>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h3 class="fw-bold">Who We Are</h3>
+                        <p>
+                            Al Zahid Madni Travels has been providing exceptional travel services since 2006.
+                            Specializing in **Hajj, Umrah, and airline ticketing**, we ensure a smooth and hassle-free
+                            experience for our customers.
+                        </p>
+                        <h3 class="fw-bold mt-4">Our Mission</h3>
+                        <p>
+                            Our mission is to offer **affordable and comfortable travel solutions** for pilgrims and
+                            travelers worldwide.
+                            With years of experience, we strive to make your journey as seamless as possible.
+                        </p>
+                    </div>
+
+                    <div class="col-md-6 d-flex align-items-center justify-content-center">
+                        <img src="images/about-us.png" alt="About Al Zahid Madni Travels" class="img-fluid rounded"
+                            style="max-width: 80%;" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feedback Section -->
+        <section id="feedback" class="feedback-section text-white text-center">
+            <div class="container-fluid">
+                <div class="position-relative text-center mb-5">
+                    <h2 class="section-title">FEEDBACK</h2>
+                    <div class="title-underline"></div>
+                    <h1 class="section-title-bg">FEEDBACK</h1>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <h3 class="fw-bold">We Value Your Feedback</h3>
+                        <p>Let us know about your experience with Al Zahid Madni Travels.</p>
+                        <form id="feedbackForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label fw-bold">Your Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold d-block">Your Rating</label>
+                                <div id="starRating" class="text-warning">
+                                    <input type="radio" name="rating" id="star5" value="5">
+                                    <label for="star5"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="rating" id="star4" value="4">
+                                    <label for="star4"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="rating" id="star3" value="3">
+                                    <label for="star3"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="rating" id="star2" value="2">
+                                    <label for="star2"><i class="fas fa-star"></i></label>
+                                    <input type="radio" name="rating" id="star1" value="1">
+                                    <label for="star1"><i class="fas fa-star"></i></label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="message" class="form-label fw-bold">Your Feedback</label>
+                                <textarea class="form-control" id="message" rows="4"
+                                    placeholder="Write your feedback here..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Submit Feedback</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="position-relative text-center mb-5 mt-5">
+                        <h2 class="section-title">Customer Feedbacks</h2>
+                        <div class="title-underline"></div>
+                    </div>
+                    <div class="row" id="reviews-container">
+                        <!-- write reviews dynamically -->
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-white text-center p-3 mt-auto" style="background-color: #002147;">
+        <p>&copy; 2025 Al Zahid Madni Travels. All Rights Reserved.</p>
+        <p>Email: info@alzahidmadni.com | Phone: 0300-9666476</p>
+        <div class="container">
+            <a href="https://www.facebook.com/share/1BZEbugM1t/?mibextid=wwXIfr" target="_blank"><i
+                    class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/alzahidmadni" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://youtube.com/@alzahidmadni" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://maps.app.goo.gl/nCuMTaeuqYHq9SRR8?g_st=com.google.maps.preview.copy" target="_blank">
+                <i class="fas fa-map-marker-alt"></i>
+            </a>
+        </div>
+    </footer>
+    <!-- Chat -->
+    <button id="chatBtn" class="chat-btn">
+        <i class="fas fa-comment-alt"></i>
+    </button>
+
+
+    <div id="chatPopup" class="chat-popup">
+        <div class="chat-header">
+            <h5>Chat with Us</h5>
+            <button id="closeChat" class="close-chat">&times;</button>
+        </div>
+        <div class="chat-body">
+            <p>Welcome! How can we assist you?</p>
+            <textarea id="chatInput" class="form-control" rows="3" placeholder="Type your message..."></textarea>
+            <button id="sendChat" class="btn btn-primary w-100 mt-2">Send</button>
+        </div>
+    </div>
+
+    <div id="signupPopup" class="modal" style="display: none;">
+        <div class="modal-content p-4 rounded shadow bg-white" style="max-width: 400px; margin: auto;"> <span
+                id="closeSignup" style="float: right; cursor: pointer;">&times;</span>
+            <h3 class="mb-3">Create an Account</h3>
+            <form id="signupForm">
+                <div class="mb-2"> <input type="text" id="signupName" class="form-control" placeholder="Full Name"
+                        required> </div>
+                <div class="mb-2"> <input type="text" id="signupUsername" class="form-control" placeholder="Username"
+                        required> </div>
+                <div class="mb-2"> <input type="password" id="signupPassword" class="form-control"
+                        placeholder="Password" required> </div> <button type="submit" class="btn btn-primary w-100">Sign
+                    Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

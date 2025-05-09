@@ -1,0 +1,273 @@
+body {
+    background-color: #0d0f17;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Lora', serif;
+    padding-top: 70px;
+}
+
+h1,
+h2 {
+    font-family: 'Playfair Display', serif;
+}
+
+main {
+    flex: 1;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1050;
+    background-color: #002147;
+    box-shadow: 0px 8px 10px rgba(90, 89, 89, 0.2);
+}
+
+.navbar a {
+    color: white !important;
+}
+
+#navbarNav a:hover {
+    color: #FFD700 !important;
+}
+
+nav img {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+footer .container a {
+    color: white;
+    font-size: 24px;
+    margin: 0 10px;
+    transition: color 0.4s ease-in-out;
+}
+
+footer .container a:hover {
+    color: #FFD700;
+}
+
+
+.services-section {
+    background-color: #0d0f17;
+    padding: 80px 0;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f7c552;
+    position: relative;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.title-underline {
+    width: 80px;
+    height: 3px;
+    background-color: #f7c552;
+    margin: 5px auto;
+}
+
+.section-title-bg {
+    font-size: 60px;
+    font-weight: bold;
+    opacity: 0.05;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-transform: uppercase;
+}
+
+
+.service-card {
+    background: #1a1c23;
+    padding: 30px;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.service-card i {
+    color: #f7c552;
+    margin-bottom: 15px;
+}
+
+.service-card h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(247, 197, 82, 0.3);
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar-toggler-icon {
+    filter: brightness(0) invert(1);
+}
+
+.chat-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 1000;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.chat-btn:hover {
+    background-color: #005bb5;
+}
+
+.chat-header h5 {
+    margin: 0;
+}
+
+.close-chat {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chat-body {
+    padding: 10px;
+}
+
+.chat-body textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.chat-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 1000;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.chat-btn:hover {
+    background-color: #005bb5;
+}
+
+#chatPopup {
+    display: none;
+}
+
+
+.chat-popup {
+    /* display: none; */
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    overflow: hidden;
+}
+
+.chat-header {
+    background: #002147;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h5 {
+    margin: 0;
+}
+
+.close-chat {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chat-body {
+    padding: 10px;
+}
+
+.chat-body textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#feedback {
+    padding: 80px 20px;
+}
+
+#starRating {
+    direction: rtl;
+    display: inline-flex;
+}
+
+#starRating input {
+    display: none;
+}
+
+#starRating label {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #ccc;
+    margin: 0 2px;
+}
+
+#starRating input:checked~label,
+#starRating label:hover,
+#starRating label:hover~label {
+    color: #ffc107;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    margin-top: 10%;
+}

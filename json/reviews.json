@@ -1,0 +1,20 @@
+{
+    "reviews": [
+      {
+        "name": "Nawaz Sharif",
+        "rating": 5,
+        "review": "Absolutely amazing service! Everything was perfectly organized and stress-free. Highly recommended!"
+      },
+      {
+        "name": "Umar Farooq",
+        "rating": 4,
+        "review": "Very professional and responsive team. Had a smooth experience overall. Just a slight delay in hotel check-in."
+      },
+      {
+        "name": "Fatima Noor",
+        "rating": 5,
+        "review": "This was my second time booking through them, and once again they exceeded my expectations. Thank you!"
+      }
+    ]
+  }
+  
