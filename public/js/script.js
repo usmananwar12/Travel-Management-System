@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-
     // Login functionality
     const loginForm = document.getElementById("loginForm");
 
@@ -82,63 +81,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
                 document.getElementById("signupMessage").textContent = "Error: " + err.message;
             });
-
-        // .then(data => {
-        //     if (data.success) {
-        //         alert("Signup successful. You can now log in.");
-        //         document.getElementById("signupPopup").style.display = "none";
-        //     } else {
-        //         alert("Signup failed: " + data.message);
-        //     }
-        // })
-        // .catch(err => {
-        //     alert("Error: " + err.message);
-        // });
     });
 
-
-    // function generateStars(rating) {
-    //     let starsHTML = '';
-    //     const fullStars = Math.floor(rating);
-    //     const halfStar = rating % 1 >= 0.5;
-    //     const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-    //     for (let i = 0; i < fullStars; i++) {
-    //         starsHTML += '<i class="fas fa-star fa-1x"></i>';
-    //     }
-    //     if (halfStar) {
-    //         starsHTML += '<i class="fas fa-star-half-alt fa-1x"></i>';
-    //     }
-    //     for (let i = 0; i < emptyStars; i++) {
-    //         starsHTML += '<i class="far fa-star fa-1x"></i>';
-    //     }
-
-    //     return starsHTML;
-    // }
-
-    //  // Fetch reviews from MongoDB
-    // fetch('/api/reviews')
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         const reviewsContainer = document.getElementById('reviews-container');
-    //         reviewsContainer.innerHTML = '';
-
-    //         data.forEach(review => {
-    //             const reviewCard = `
-    //                 <div class="col-md-4 mb-4">
-    //                     <div class="card bg-dark text-white">
-    //                         <div class="card-body">
-    //                             <h5 class="card-title">${review.name}</h5>
-    //                             <p class="card-text">${'⭐'.repeat(review.rating)}</p>
-    //                             <p class="card-text">${review.review}</p>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             `;
-    //             reviewsContainer.innerHTML += reviewCard;
-    //         });
-    //     })
-    //     .catch(err => console.error('Error loading reviews:', err));
     function generateStars(rating) {
         let starsHTML = '';
         const fullStars = Math.floor(rating);
@@ -192,18 +136,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     $('#feedbackForm').submit(function (e) {
+        e.preventDefault(); // Prevent default form submission
+
         let name = $('#name').val();
-        let feedback = $('#message').val();
+        let rating = $('input[name="rating"]:checked').val();
+        let review = $('#message').val();
 
-        if (!feedback || !name) {
+        if (!name || !review || !rating) {
             alert("Please fill all fields.");
-            e.preventDefault();
-        } else {
-            alert("Thank you for your feedback!");
+            return;
         }
-    });
 
-    $('h2').click(function () {
-        console.log('H2 tag clicked:', $(this).text());
+        $.ajax({
+            url: '/api/reviews', // Ensure your backend route matches this path
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ name, rating, review }),
+            success: function (response) {
+                alert("Thank you for your feedback!");
+                $('#feedbackForm')[0].reset();
+            },
+            error: function (error) {
+                alert("Error submitting feedback. Please try again.");
+            }
+        });
     });
 });
