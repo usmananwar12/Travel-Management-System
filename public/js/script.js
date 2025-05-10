@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const loginMsg = document.getElementById("loginMessage");
                 if (data.success) {
                     localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('loggedInUser', enteredUsername);
                     window.location.href = 'dashboard.html';
                 } else {
                     loginMsg.textContent = data.message || "Invalid username or password.";
@@ -134,30 +135,47 @@ document.addEventListener("DOMContentLoaded", function () {
             $('#chatPopup').fadeOut();
         });
     });
+    // Show alert message
+    function showAlert(message, type) {
+        let alertHtml = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close custom-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+        $('#feedbackAlert').html(alertHtml);
+
+        // Reload page when close button is clicked
+        $('.custom-close').on('click', function () {
+            location.reload();
+        });
+    }
+
 
     $('#feedbackForm').submit(function (e) {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
 
         let name = $('#name').val();
         let rating = $('input[name="rating"]:checked').val();
         let review = $('#message').val();
 
         if (!name || !review || !rating) {
-            alert("Please fill all fields.");
+            showAlert('Please fill all fields.', 'danger');
             return;
         }
 
+
         $.ajax({
-            url: '/api/reviews', // Ensure your backend route matches this path
+            url: '/api/reviews',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ name, rating, review }),
             success: function (response) {
-                alert("Thank you for your feedback!");
+                showAlert("Thank you for your feedback!", 'success');
                 $('#feedbackForm')[0].reset();
             },
             error: function (error) {
-                alert("Error submitting feedback. Please try again.");
+                showAlert("Error submitting feedback. Please try again.", 'danger');
             }
         });
     });

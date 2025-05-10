@@ -60,3 +60,16 @@ body {
     font-size: 1.75rem;
   }
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+}
