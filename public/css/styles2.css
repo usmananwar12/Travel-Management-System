@@ -196,3 +196,22 @@ body {
   padding: 0.5em 0.75em;
   font-weight: normal;
 }
+
+/* Ticket card styling */
+.card-header {
+  background-color: rgba(0, 33, 71, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fa-plane {
+  color: #f7c552;
+  font-size: 1.5rem;
+  transform: rotate(45deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .card-body {
+    padding: 1rem;
+  }
+}

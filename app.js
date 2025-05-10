@@ -7,6 +7,8 @@ const bodyParser = require("body-parser")
 const userRoutes = require("./routes/userRoutes")
 const reviewRoutes = require("./routes/reviewRoutes")
 const paymentRoutes = require("./routes/paymentRoutes")
+const ticketRoutes = require("./routes/ticketRoutes") // Fixed typo here
+const bookingRoutes = require("./routes/bookingRoutes")
 
 const app = express()
 
@@ -36,6 +38,8 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use("/api/users", userRoutes)
 app.use("/api/reviews", reviewRoutes)
 app.use("/api/payments", paymentRoutes)
+app.use("/api/tickets", ticketRoutes)
+app.use("/api/bookings", bookingRoutes)
 
 // Debug route
 app.get("/api/debug", (req, res) => {
