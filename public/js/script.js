@@ -116,36 +116,29 @@ document.addEventListener("DOMContentLoaded", function () {
         return starsHTML;
     }
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'json/reviews.json', true);
+     // Fetch reviews from MongoDB
+    fetch('/api/reviews')
+        .then(response => response.json())
+        .then(data => {
+            const reviewsContainer = document.getElementById('reviews-container');
+            reviewsContainer.innerHTML = '';
 
-    xhr.onload = function () {
-        if (xhr.status >= 200 && xhr.status < 300) {
-            const data = JSON.parse(xhr.responseText);
-            const container = document.getElementById('reviews-container');
-
-            data.reviews.forEach(review => {
-                const reviewHTML = `
-                <div class="col-md-4 mb-4">
-                    <div class="service-card">
-                        <h2>${review.name}</h2>
-                        ${generateStars(review.rating)}
-                        <p>"${review.review}"</p>
+            data.forEach(review => {
+                const reviewCard = `
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-dark text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">${review.name}</h5>
+                                <p class="card-text">${'⭐'.repeat(review.rating)}</p>
+                                <p class="card-text">${review.review}</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            `;
-                container.innerHTML += reviewHTML;
+                `;
+                reviewsContainer.innerHTML += reviewCard;
             });
-        } else {
-            console.error('Error loading reviews. Status:', xhr.status);
-        }
-    };
-
-    xhr.onerror = function () {
-        console.error('Network error while loading reviews.');
-    };
-
-    xhr.send();
+        })
+        .catch(err => console.error('Error loading reviews:', err));
 
     //jquerry 
     $(document).ready(function () {
