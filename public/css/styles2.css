@@ -237,3 +237,26 @@ h2 {
 #name {
   padding-bottom:5px;
 }
+
+/* Custom styles for the navbar toggler */
+  .navbar-toggler {
+    border: none;
+    padding: 0.25rem 0.5rem;
+    background-color: transparent;
+  }
+  
+  .navbar-toggler:focus {
+    box-shadow: none;
+    outline: none;
+  }
+  
+  /* Adjust sidebar margin on mobile */
+  @media (max-width: 767.98px) {
+    #sidebarMenu .d-flex {
+      margin-top: 10px !important;
+    }
+    
+    main {
+      margin-top: 10px;
+    }
+  }
