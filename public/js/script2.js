@@ -27,6 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Get all sidebar navigation links
   const navLinks = document.querySelectorAll(".sidebar a[data-page]")
 
+  // Initialize notification state
+  const notificationState = {
+    notifications: [],
+    unreadCount: 0,
+    lastChecked: localStorage.getItem("lastNotificationCheck") || 0,
+  }
+
   // Add click event listener to each link
   navLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
@@ -46,7 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
         targetSection.classList.add("active-section")
 
         // Load data based on the page
-        if (pageToShow === "ledger") {
+        if (pageToShow === "dashboard") {
+          loadNotifications()
+          // Reset unread count when visiting dashboard
+          updateNotificationBadge(0)
+        } else if (pageToShow === "ledger") {
           loadPaymentHistory()
         } else if (pageToShow === "airline") {
           loadTickets()
@@ -247,10 +258,234 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((error) => {
         console.error("Error loading payments:", error)
-        tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Error loading payment history: ${error.message || error.error || "Unknown error"
-          }</td></tr>`
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Error loading payment history: ${
+          error.message || error.error || "Unknown error"
+        }</td></tr>`
       })
   }
+
+  // Function to update notification badge
+  function updateNotificationBadge(count) {
+    const badge = document.getElementById("notification-badge")
+    if (badge) {
+      if (count > 0) {
+        badge.textContent = count > 99 ? "99+" : count
+        badge.classList.remove("d-none")
+      } else {
+        badge.classList.add("d-none")
+      }
+      notificationState.unreadCount = count
+    }
+  }
+
+  // Function to play notification sound
+  function playNotificationSound() {
+    const sound = document.getElementById("notification-sound")
+    if (sound) {
+      sound.currentTime = 0
+      sound.play().catch((err) => {
+        console.log("Error playing notification sound:", err)
+      })
+    }
+  }
+
+  // Function to check for new notifications
+  function checkForNewNotifications() {
+    const lastChecked = notificationState.lastChecked
+
+    fetch(`/api/payments/notifications?username=${username}&since=${lastChecked}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch new notifications")
+        }
+        return response.json()
+      })
+      .then((newNotifications) => {
+        if (newNotifications.length > 0) {
+          // Update unread count
+          updateNotificationBadge(notificationState.unreadCount + newNotifications.length)
+
+          // Play sound if we're not on the dashboard page
+          if (!document.getElementById("dashboard-page").classList.contains("active-section")) {
+            playNotificationSound()
+          }
+
+          // If we're on the dashboard, refresh the notifications
+          if (document.getElementById("dashboard-page").classList.contains("active-section")) {
+            loadNotifications()
+          }
+        }
+
+        // Update last checked time
+        notificationState.lastChecked = Date.now()
+        localStorage.setItem("lastNotificationCheck", notificationState.lastChecked)
+      })
+      .catch((error) => {
+        console.error("Error checking for new notifications:", error)
+      })
+  }
+
+  // Function to load notifications (completed or failed payments)
+  function loadNotifications() {
+    const notificationsArea = document.getElementById("notifications-area")
+    if (!notificationsArea) return
+
+    console.log("Fetching notifications for user:", username)
+
+    // Get current filter
+    const activeFilter =
+      document.querySelector(".notification-controls .btn-group .active").getAttribute("data-filter") || "all"
+    let url = `/api/payments/notifications?username=${username}`
+
+    if (activeFilter !== "all") {
+      url += `&status=${activeFilter}`
+    }
+
+    fetch(url)
+      .then((response) => {
+        console.log("Notifications response status:", response.status)
+        if (!response.ok) {
+          return response.text().then((text) => {
+            console.log("Error response text:", text)
+            try {
+              // Try to parse as JSON
+              return Promise.reject(JSON.parse(text))
+            } catch (e) {
+              // If not JSON, return the text
+              return Promise.reject({ error: text })
+            }
+          })
+        }
+        return response.json()
+      })
+      .then((payments) => {
+        console.log("Notification payments received:", payments)
+
+        // Store notifications in state
+        notificationState.notifications = payments
+
+        // Update last checked time
+        notificationState.lastChecked = Date.now()
+        localStorage.setItem("lastNotificationCheck", notificationState.lastChecked)
+
+        // Reset unread count when viewing notifications
+        updateNotificationBadge(0)
+
+        if (payments.length === 0) {
+          notificationsArea.innerHTML = '<div class="text-center text-muted">No notifications at this time.</div>'
+          return
+        }
+
+        notificationsArea.innerHTML = ""
+        payments.forEach((payment) => {
+          // Format amount
+          const formattedAmount = new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "PKR",
+          }).format(payment.amount)
+
+          // Create notification item with appropriate styling based on status
+          const statusClass = payment.status === "Completed" ? "success" : "danger"
+          const icon = payment.status === "Completed" ? "check-circle" : "times-circle"
+
+          notificationsArea.innerHTML += `
+            <div class="notification-item mb-2 p-3 border-start border-${statusClass} border-3 bg-dark rounded" data-id="${payment._id}" data-status="${payment.status.toLowerCase()}">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-${icon} text-${statusClass} me-2"></i>
+                <div class="flex-grow-1">
+                  <p class="mb-0">${payment.name} payment of ${formattedAmount} has been ${payment.status.toLowerCase()}</p>
+                  <small class="text-muted">${new Date(payment.date).toLocaleString()}</small>
+                </div>
+                <button class="btn btn-sm btn-link text-muted mark-read-btn" title="Mark as read">
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+            </div>
+          `
+        })
+
+        // Add event listeners to mark read buttons
+        document.querySelectorAll(".mark-read-btn").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.preventDefault()
+            const notificationItem = this.closest(".notification-item")
+            notificationItem.classList.add("fade-out")
+
+            // Remove after animation completes
+            setTimeout(() => {
+              notificationItem.remove()
+
+              // Check if there are any notifications left
+              if (document.querySelectorAll(".notification-item").length === 0) {
+                notificationsArea.innerHTML = '<div class="text-center text-muted">No notifications at this time.</div>'
+              }
+            }, 300)
+          })
+        })
+      })
+      .catch((error) => {
+        console.error("Error loading notifications:", error)
+        notificationsArea.innerHTML = `
+          <div class="text-center text-danger">
+            <p>Error loading notifications: ${error.message || error.error || "Unknown error"}</p>
+          </div>
+        `
+      })
+  }
+
+  // Set up notification filter buttons
+  document.querySelectorAll(".notification-controls .btn-group button").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      // Remove active class from all buttons
+      document.querySelectorAll(".notification-controls .btn-group button").forEach((b) => {
+        b.classList.remove("active")
+      })
+
+      // Add active class to clicked button
+      this.classList.add("active")
+
+      // Reload notifications with filter
+      loadNotifications()
+    })
+  })
+
+  // Set up mark all read button
+  document.getElementById("mark-all-read").addEventListener("click", () => {
+    const notificationsArea = document.getElementById("notifications-area")
+
+    // Add fade-out class to all notifications
+    document.querySelectorAll(".notification-item").forEach((item) => {
+      item.classList.add("fade-out")
+    })
+
+    // Remove all after animation completes
+    setTimeout(() => {
+      notificationsArea.innerHTML = '<div class="text-center text-muted">No notifications at this time.</div>'
+    }, 300)
+
+    // Reset unread count
+    updateNotificationBadge(0)
+  })
+
+  // Set up clear all notifications button
+  document.getElementById("clear-all-notifications").addEventListener("click", () => {
+    if (confirm("Are you sure you want to clear all notifications?")) {
+      const notificationsArea = document.getElementById("notifications-area")
+
+      // Add fade-out class to all notifications
+      document.querySelectorAll(".notification-item").forEach((item) => {
+        item.classList.add("fade-out")
+      })
+
+      // Remove all after animation completes
+      setTimeout(() => {
+        notificationsArea.innerHTML = '<div class="text-center text-muted">No notifications at this time.</div>'
+      }, 300)
+
+      // Reset unread count
+      updateNotificationBadge(0)
+    }
+  })
 
   // Function to load tickets
   function loadTickets() {
@@ -558,7 +793,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `
 
-
     fetch(`/api/bookings/user/${username}`)
       .then((response) => {
         if (!response.ok) {
@@ -636,12 +870,13 @@ document.addEventListener("DOMContentLoaded", () => {
                       <p class="mb-0 text-muted">Booking Date</p>
                       <p class="mb-0">${bookingDate}</p>
                     </div>
-                    ${booking.status !== "Cancelled"
-              ? `<button class="btn btn-danger cancel-booking-btn" data-booking-id="${booking._id}">
+                    ${
+                      booking.status !== "Cancelled"
+                        ? `<button class="btn btn-danger cancel-booking-btn" data-booking-id="${booking._id}">
                             Cancel Booking
                           </button>`
-              : ""
-            }
+                        : ""
+                    }
                   </div>
                 </div>
               </div>
@@ -701,11 +936,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Load data for active page on initial load
-  if (document.getElementById("ledger-page")?.classList.contains("active-section")) {
+  if (document.getElementById("dashboard-page")?.classList.contains("active-section")) {
+    loadNotifications()
+  } else if (document.getElementById("ledger-page")?.classList.contains("active-section")) {
     loadPaymentHistory()
   } else if (document.getElementById("airline-page")?.classList.contains("active-section")) {
     loadTickets()
   } else if (document.getElementById("bookings-page")?.classList.contains("active-section")) {
     loadBookings()
   }
+
+  // Set up periodic check for new notifications (every 30 seconds)
+  setInterval(checkForNewNotifications, 30000)
 })

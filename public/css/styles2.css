@@ -1,11 +1,11 @@
 body {
   background-color: #0d0f17;
   color: white;
-  font-family: 'Lora', serif;
+  font-family: "Lora", serif;
 }
 h1,
 h2 {
-    font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
 }
 
 .sidebar {
@@ -229,34 +229,148 @@ h2 {
   /* light gray text for good contrast */
   line-height: 1.6;
   max-width: 800px;
-  /* so text doesn’t stretch too wide */
+  /* so text doesn't stretch too wide */
   padding-left: 20px;
-
 }
 
 #name {
-  padding-bottom:5px;
+  padding-bottom: 5px;
 }
 
 /* Custom styles for the navbar toggler */
-  .navbar-toggler {
-    border: none;
-    padding: 0.25rem 0.5rem;
-    background-color: transparent;
+.navbar-toggler {
+  border: none;
+  padding: 0.25rem 0.5rem;
+  background-color: transparent;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+/* Adjust sidebar margin on mobile */
+@media (max-width: 767.98px) {
+  #sidebarMenu .d-flex {
+    margin-top: 10px !important;
   }
-  
-  .navbar-toggler:focus {
-    box-shadow: none;
-    outline: none;
+
+  main {
+    margin-top: 10px;
   }
-  
-  /* Adjust sidebar margin on mobile */
-  @media (max-width: 767.98px) {
-    #sidebarMenu .d-flex {
-      margin-top: 10px !important;
-    }
-    
-    main {
-      margin-top: 10px;
-    }
+}
+
+/* Notification styling*/
+.notifications-container {
+  background-color: #1a1c23;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.notification-item {
+  transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+  transform: translateX(5px);
+}
+
+.notification-item.fade-out {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+#notifications-area {
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #444 #1a1c23;
+}
+
+#notifications-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+#notifications-area::-webkit-scrollbar-track {
+  background: #1a1c23;
+}
+
+#notifications-area::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 6px;
+}
+
+/* Notification controls */
+.notification-controls {
+  display: flex;
+  flex-wrap: wrap; /* allow wrap on small screens */
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.notification-controls .btn-group .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.notification-controls .btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.notification-controls .btn-outline-light.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.notification-controls .btn-outline-danger:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* Mark read button */
+.mark-read-btn {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.notification-item:hover .mark-read-btn {
+  opacity: 1;
+}
+
+/* Notification badge */
+#notification-badge {
+  font-size: 0.65rem;
+  padding: 0.25rem 0.4rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    align-items: flex-start !important;
   }
+
+  .notification-controls {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .notification-controls .btn-group {
+    width: 100%;
+  }
+
+  .notification-controls .btn {
+    width: 100%;
+  }
+
+  #mark-all-read,
+  #clear-all-notifications {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+}

@@ -26,6 +26,43 @@ router.get("/", async (req, res) => {
   }
 })
 
+// Get notifications (completed or failed payments) for a user
+router.get("/notifications", async (req, res) => {
+  try {
+    const { username, status, since } = req.query
+
+    if (!username) {
+      return res.status(400).json({ error: "Username is required." })
+    }
+
+    console.log(`Fetching notifications for user: ${username}`)
+
+    // Build query based on parameters
+    const query = {
+      username,
+      status: { $in: ["Completed", "Failed"] },
+    }
+
+    // If status filter is provided
+    if (status && (status === "completed" || status === "failed")) {
+      query.status = status === "completed" ? "Completed" : "Failed"
+    }
+
+    // If since timestamp is provided
+    if (since) {
+      query.date = { $gt: new Date(Number.parseInt(since)) }
+    }
+
+    const payments = await Payment.find(query).sort({ date: -1 }).limit(10)
+
+    console.log(`Found ${payments.length} notifications for ${username}`)
+    res.json(payments)
+  } catch (err) {
+    console.error("Notifications fetch error:", err)
+    res.status(500).json({ error: "Failed to retrieve notifications.", message: err.message })
+  }
+})
+
 // Create a payment
 router.post("/", async (req, res) => {
   try {
