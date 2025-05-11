@@ -18,6 +18,10 @@ const paymentSchema = new mongoose.Schema({
     enum: ["Pending", "Completed", "Failed"],
     default: "Pending",
   },
+  username: {
+    type: String,
+    required: true,
+  },
 })
 
 module.exports = mongoose.model("Payment", paymentSchema)

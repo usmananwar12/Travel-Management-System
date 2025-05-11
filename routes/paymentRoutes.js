@@ -2,38 +2,54 @@ const express = require("express")
 const router = express.Router()
 const Payment = require("../models/Payment")
 
-// Create a payment
-router.post("/", async (req, res) => {
-  try {
-    const { name, amount, date, status } = req.body
-
-    if (!name || !amount) {
-      return res.status(400).json({ error: "Name and amount are required." })
-    }
-
-    const newPayment = new Payment({
-      name,
-      amount: Number(amount), // Ensure amount is a number
-      date: date || Date.now(),
-      status: status || "Pending",
-    })
-
-    const savedPayment = await newPayment.save()
-    res.status(201).json(savedPayment)
-  } catch (err) {
-    console.error("Payment creation error:", err)
-    res.status(500).json({ error: "Server error. Please try again later.", message: err.message })
-  }
+// Debug route to verify the router is working
+router.get("/test", (req, res) => {
+  res.json({ message: "Payment routes are working" })
 })
 
-// Get all payments
+// Get all payments for a user
 router.get("/", async (req, res) => {
   try {
-    const payments = await Payment.find().sort({ date: -1 })
+    const { username } = req.query
+
+    if (!username) {
+      return res.status(400).json({ error: "Username is required." })
+    }
+
+    console.log(`Fetching payments for user: ${username}`)
+    const payments = await Payment.find({ username }).sort({ date: -1 })
+    console.log(`Found ${payments.length} payments for ${username}`)
     res.json(payments)
   } catch (err) {
     console.error("Payment fetch error:", err)
     res.status(500).json({ error: "Failed to retrieve payments.", message: err.message })
+  }
+})
+
+// Create a payment
+router.post("/", async (req, res) => {
+  try {
+    console.log("Payment request received:", req.body)
+    const { name, amount, date, status, username } = req.body
+
+    if (!name || !amount || !username) {
+      return res.status(400).json({ error: "Name, amount, and username are required." })
+    }
+
+    const newPayment = new Payment({
+      name,
+      amount: Number(amount),
+      date: date || Date.now(),
+      status: status || "Pending",
+      username,
+    })
+
+    const savedPayment = await newPayment.save()
+    console.log("Payment saved:", savedPayment)
+    res.status(201).json(savedPayment)
+  } catch (err) {
+    console.error("Payment creation error:", err)
+    res.status(500).json({ error: "Server error. Please try again later.", message: err.message })
   }
 })
 

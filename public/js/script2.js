@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
           amount,
           date,
           status,
+          username,
         }),
       })
         .then((response) => {
@@ -187,9 +188,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Loading payment history...</td></tr>'
 
-    console.log("Fetching payment history...")
+    console.log("Fetching payment history for user:", username)
 
-    fetch("/api/payments")
+    fetch(`/api/payments?username=${username}`)
       .then((response) => {
         console.log("Payment history response status:", response.status)
         if (!response.ok) {
@@ -246,9 +247,8 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((error) => {
         console.error("Error loading payments:", error)
-        tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Error loading payment history: ${
-          error.message || error.error || "Unknown error"
-        }</td></tr>`
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Error loading payment history: ${error.message || error.error || "Unknown error"
+          }</td></tr>`
       })
   }
 
@@ -636,13 +636,12 @@ document.addEventListener("DOMContentLoaded", () => {
                       <p class="mb-0 text-muted">Booking Date</p>
                       <p class="mb-0">${bookingDate}</p>
                     </div>
-                    ${
-                      booking.status !== "Cancelled"
-                        ? `<button class="btn btn-danger cancel-booking-btn" data-booking-id="${booking._id}">
+                    ${booking.status !== "Cancelled"
+              ? `<button class="btn btn-danger cancel-booking-btn" data-booking-id="${booking._id}">
                             Cancel Booking
                           </button>`
-                        : ""
-                    }
+              : ""
+            }
                   </div>
                 </div>
               </div>
