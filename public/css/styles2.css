@@ -1,6 +1,11 @@
 body {
   background-color: #0d0f17;
   color: white;
+  font-family: 'Lora', serif;
+}
+h1,
+h2 {
+    font-family: 'Playfair Display', serif;
 }
 
 .sidebar {
@@ -124,6 +129,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -214,4 +220,20 @@ body {
   .card-body {
     padding: 1rem;
   }
+}
+
+.dashboard-info {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #cccccc;
+  /* light gray text for good contrast */
+  line-height: 1.6;
+  max-width: 800px;
+  /* so text doesn’t stretch too wide */
+  padding-left: 20px;
+
+}
+
+#name {
+  padding-bottom:5px;
 }

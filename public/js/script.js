@@ -127,14 +127,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //jquerry 
     $(document).ready(function () {
-        $('#chatBtn').click(function () {
-            $('#chatPopup').fadeIn();
-        });
-
-        $('#closeChat').click(function () {
-            $('#chatPopup').fadeOut();
-        });
+    // Open chat popup
+    $('#chatBtn').click(function () {
+        $('#chatPopup').fadeIn();
     });
+
+    // Close chat popup
+    $('#closeChat').click(function () {
+        $('#chatPopup').fadeOut();
+    });
+
+    // Handle Send button
+    $('#sendChat').click(function () {
+        var userMessage = $('#chatInput').val().trim();
+
+        if (userMessage !== '') {
+            // Add user's message to chat
+            $('#chatMessages').append('<div class="user-message"><strong>You:</strong> ' + userMessage + '</div>');
+
+            // Clear input field
+            $('#chatInput').val('');
+
+            // Auto-reply after a short delay
+            setTimeout(function () {
+                $('#chatMessages').append('<div class="bot-message"><strong>Al Zahid Madni Travels:</strong> Thank you for contacting us. We will get back to you shortly!</div>');
+
+                // Scroll to the latest message
+                $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+            }, 500);
+        }
+    });
+});
+
     // Show alert message
     function showAlert(message, type) {
         let alertHtml = `

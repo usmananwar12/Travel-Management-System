@@ -228,19 +228,22 @@
     </button>
 
 
-    <div id="chatPopup" class="chat-popup">
+    <div id="chatPopup" class="chat-popup" style="display: none;">
         <div class="chat-header">
             <h5>Chat with Us</h5>
             <button id="closeChat" class="close-chat">&times;</button>
         </div>
         <div class="chat-body">
-            <p>Welcome! How can we assist you?</p>
+            <div id="chatMessages">
+                <p>Welcome! How can we assist you?</p>
+            </div>
             <textarea id="chatInput" class="form-control" rows="3" placeholder="Type your message..."></textarea>
             <button id="sendChat" class="btn btn-primary w-100 mt-2">Send</button>
         </div>
     </div>
 
-    <div id="signupPopup" class="modal" style="display: none;">
+
+    <div id="signupPopup" class="modal" style="display: none; padding-top: 150px;">
         <div class="modal-content p-4 rounded shadow bg-white" style="max-width: 400px; margin: auto;"> <span
                 id="closeSignup" style="float: right; cursor: pointer;">&times;</span>
             <h3 class="mb-3">Create an Account</h3>

@@ -5,7 +5,6 @@ const Review = require('../models/Review');
 // Create a review
 router.post('/', async (req, res) => {
   try {
-    console.log(req.body); // Debugging: Check what data is received
     const { name, rating, review } = req.body;
 
     if (!name || !rating || !review) {

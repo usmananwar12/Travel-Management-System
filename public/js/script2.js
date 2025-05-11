@@ -1,5 +1,5 @@
 // Get username from localStorage
-const username = localStorage.getItem("loggedInUser") || "User123"
+const username = localStorage.getItem("loggedInUser") || "User"
 
 // Update places where username is shown
 document.querySelectorAll(".username-placeholder").forEach((el) => {
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // Format amount
           const formattedAmount = new Intl.NumberFormat("en-US", {
             style: "currency",
-            currency: "USD",
+            currency: "PKR",
           }).format(payment.amount)
 
           tableBody.innerHTML += `
@@ -302,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // Format price
           const formattedPrice = new Intl.NumberFormat("en-US", {
             style: "currency",
-            currency: "USD",
+            currency: "PKR",
           }).format(ticket.price)
 
           // Create availability badge
@@ -411,7 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Format price
         const formattedPrice = new Intl.NumberFormat("en-US", {
           style: "currency",
-          currency: "USD",
+          currency: "PKR",
         }).format(ticket.price)
 
         // Display ticket details in modal
@@ -558,7 +558,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `
 
-    console.log("Fetching bookings...")
 
     fetch(`/api/bookings/user/${username}`)
       .then((response) => {

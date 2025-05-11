@@ -5,7 +5,6 @@ const Payment = require("../models/Payment")
 // Create a payment
 router.post("/", async (req, res) => {
   try {
-    console.log("Payment request received:", req.body) // Debugging: Check what data is received
     const { name, amount, date, status } = req.body
 
     if (!name || !amount) {
@@ -20,7 +19,6 @@ router.post("/", async (req, res) => {
     })
 
     const savedPayment = await newPayment.save()
-    console.log("Payment saved:", savedPayment)
     res.status(201).json(savedPayment)
   } catch (err) {
     console.error("Payment creation error:", err)
@@ -31,9 +29,7 @@ router.post("/", async (req, res) => {
 // Get all payments
 router.get("/", async (req, res) => {
   try {
-    console.log("Fetching all payments")
     const payments = await Payment.find().sort({ date: -1 })
-    console.log(`Found ${payments.length} payments`)
     res.json(payments)
   } catch (err) {
     console.error("Payment fetch error:", err)

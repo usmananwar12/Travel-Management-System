@@ -25,11 +25,6 @@ mongoose
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// Debug middleware to log all requests
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`)
-  next()
-})
 
 // Serve static files (for frontend)
 app.use(express.static(path.join(__dirname, "public")))
