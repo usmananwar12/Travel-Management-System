@@ -199,11 +199,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Loading payment history...</td></tr>'
 
-    console.log("Fetching payment history for user:", username)
-
     fetch(`/api/payments?username=${username}`)
       .then((response) => {
-        console.log("Payment history response status:", response.status)
         if (!response.ok) {
           return response.text().then((text) => {
             console.log("Error response text:", text)
@@ -330,8 +327,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const notificationsArea = document.getElementById("notifications-area")
     if (!notificationsArea) return
 
-    console.log("Fetching notifications for user:", username)
-
     // Get current filter
     const activeFilter =
       document.querySelector(".notification-controls .btn-group .active").getAttribute("data-filter") || "all"
@@ -359,12 +354,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json()
       })
       .then((payments) => {
-        console.log("Notification payments received:", payments)
 
         // Store notifications in state
         notificationState.notifications = payments
 
         // Update last checked time
+        console.log("Last checked time:", notificationState.lastChecked)
+        console.log("Current time:", Date.now())
         notificationState.lastChecked = Date.now()
         localStorage.setItem("lastNotificationCheck", notificationState.lastChecked)
 
@@ -372,7 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateNotificationBadge(0)
 
         if (payments.length === 0) {
-          notificationsArea.innerHTML = '<div class="text-center text-muted">No notifications at this time.</div>'
+          notificationsArea.innerHTML = '<div class="text-center">No notifications at this time.</div>'
           return
         }
 
@@ -393,35 +389,14 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="d-flex align-items-center">
                 <i class="fas fa-${icon} text-${statusClass} me-2"></i>
                 <div class="flex-grow-1">
-                  <p class="mb-0">${payment.name} payment of ${formattedAmount} has been ${payment.status.toLowerCase()}</p>
+                  <p class="mb-0" style="padding-top:20px">Payment of ${formattedAmount} has been ${payment.status.toLowerCase()}</p>
                   <small class="text-muted">${new Date(payment.date).toLocaleString()}</small>
                 </div>
-                <button class="btn btn-sm btn-link text-muted mark-read-btn" title="Mark as read">
-                  <i class="fas fa-check"></i>
-                </button>
               </div>
             </div>
           `
         })
 
-        // Add event listeners to mark read buttons
-        document.querySelectorAll(".mark-read-btn").forEach((btn) => {
-          btn.addEventListener("click", function (e) {
-            e.preventDefault()
-            const notificationItem = this.closest(".notification-item")
-            notificationItem.classList.add("fade-out")
-
-            // Remove after animation completes
-            setTimeout(() => {
-              notificationItem.remove()
-
-              // Check if there are any notifications left
-              if (document.querySelectorAll(".notification-item").length === 0) {
-                notificationsArea.innerHTML = '<div class="text-center text-muted">No notifications at this time.</div>'
-              }
-            }, 300)
-          })
-        })
       })
       .catch((error) => {
         console.error("Error loading notifications:", error)
@@ -447,24 +422,6 @@ document.addEventListener("DOMContentLoaded", () => {
       // Reload notifications with filter
       loadNotifications()
     })
-  })
-
-  // Set up mark all read button
-  document.getElementById("mark-all-read").addEventListener("click", () => {
-    const notificationsArea = document.getElementById("notifications-area")
-
-    // Add fade-out class to all notifications
-    document.querySelectorAll(".notification-item").forEach((item) => {
-      item.classList.add("fade-out")
-    })
-
-    // Remove all after animation completes
-    setTimeout(() => {
-      notificationsArea.innerHTML = '<div class="text-center text-muted">No notifications at this time.</div>'
-    }, 300)
-
-    // Reset unread count
-    updateNotificationBadge(0)
   })
 
   // Set up clear all notifications button
@@ -501,7 +458,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `
 
-    console.log("Fetching tickets...")
 
     fetch("/api/tickets")
       .then((response) => {
@@ -517,7 +473,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json()
       })
       .then((tickets) => {
-        console.log("Tickets received:", tickets)
 
         if (tickets.length === 0) {
           ticketsContainer.innerHTML = `
@@ -721,7 +676,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return
       }
 
-      console.log("Confirming booking:", { ticketId, passengerName, passengerEmail, passengerPhone })
 
       // Submit booking to API
       fetch("/api/bookings", {
@@ -750,7 +704,6 @@ document.addEventListener("DOMContentLoaded", () => {
           return response.json()
         })
         .then((data) => {
-          console.log("Booking success:", data)
 
           // Show success message
           messageEl.textContent = "Booking confirmed successfully!"
@@ -807,7 +760,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json()
       })
       .then((bookings) => {
-        console.log("Bookings received:", bookings)
 
         if (bookings.length === 0) {
           bookingsContainer.innerHTML = `
@@ -922,7 +874,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json()
       })
       .then((data) => {
-        console.log("Booking cancelled:", data)
         alert("Booking cancelled successfully.")
 
         // Reload bookings and tickets
