@@ -822,6 +822,13 @@ document.addEventListener("DOMContentLoaded", () => {
                       <p class="mb-0 text-muted">Booking Date</p>
                       <p class="mb-0">${bookingDate}</p>
                     </div>
+                    <div>
+                      <p class="mb-0 text-muted">Price</p>
+                      <p class="mb-0 fw-bold">${new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        currency: "PKR",
+                      }).format(booking.price || ticket.price)}</p>
+                    </div>
                     ${
                       booking.status !== "Cancelled"
                         ? `<button class="btn btn-danger cancel-booking-btn" data-booking-id="${booking._id}">

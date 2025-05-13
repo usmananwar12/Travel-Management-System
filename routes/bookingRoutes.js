@@ -38,6 +38,7 @@ router.post("/", async (req, res) => {
       passengerName,
       passengerEmail,
       passengerPhone,
+      price: ticket.price,
     })
 
     // Reduce available seats
