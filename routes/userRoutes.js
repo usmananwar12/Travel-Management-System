@@ -34,7 +34,6 @@ router.post('/register', async (req, res) => {
             return res.status(409).json({ success: false, message: "Username already taken." });
         }
 
-        // Save new user
         const newUser = new User({ username, password });
         await newUser.save();
 

@@ -16,9 +16,7 @@ router.get("/", async (req, res) => {
       return res.status(400).json({ error: "Username is required." })
     }
 
-    console.log(`Fetching payments for user: ${username}`)
     const payments = await Payment.find({ username }).sort({ date: -1 })
-    console.log(`Found ${payments.length} payments for ${username}`)
     res.json(payments)
   } catch (err) {
     console.error("Payment fetch error:", err)
@@ -34,8 +32,6 @@ router.get("/notifications", async (req, res) => {
     if (!username) {
       return res.status(400).json({ error: "Username is required." })
     }
-
-    console.log(`Fetching notifications for user: ${username}`)
 
     // Build query based on parameters
     const query = {
@@ -55,7 +51,6 @@ router.get("/notifications", async (req, res) => {
 
     const payments = await Payment.find(query).sort({ date: -1 }).limit(10)
 
-    console.log(`Found ${payments.length} notifications for ${username}`)
     res.json(payments)
   } catch (err) {
     console.error("Notifications fetch error:", err)

@@ -7,7 +7,7 @@ const bodyParser = require("body-parser")
 const userRoutes = require("./routes/userRoutes")
 const reviewRoutes = require("./routes/reviewRoutes")
 const paymentRoutes = require("./routes/paymentRoutes")
-const ticketRoutes = require("./routes/ticketRoutes") // Fixed typo here
+const ticketRoutes = require("./routes/ticketRoutes") 
 const bookingRoutes = require("./routes/bookingRoutes")
 
 const app = express()

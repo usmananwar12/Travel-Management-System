@@ -21,7 +21,6 @@ router.post("/", async (req, res) => {
   try {
     const { ticketId, username, passengerName, passengerEmail, passengerPhone } = req.body
 
-    // Check if ticket exists and has available seats
     const ticket = await Ticket.findById(ticketId)
     if (!ticket) {
       return res.status(404).json({ error: "Ticket not found." })
@@ -30,8 +29,6 @@ router.post("/", async (req, res) => {
     if (ticket.availableSeats < 1) {
       return res.status(400).json({ error: "No available seats for this flight." })
     }
-
-    // Create booking
     const newBooking = new Booking({
       username,
       ticketId,
@@ -41,11 +38,9 @@ router.post("/", async (req, res) => {
       price: ticket.price,
     })
 
-    // Reduce available seats
     ticket.availableSeats -= 1
     await ticket.save()
 
-    // Save booking
     await newBooking.save()
     res.status(201).json(newBooking)
   } catch (err) {
@@ -62,16 +57,13 @@ router.patch("/:id/cancel", async (req, res) => {
       return res.status(404).json({ error: "Booking not found." })
     }
 
-    // Only allow cancellation if not already cancelled
     if (booking.status === "Cancelled") {
       return res.status(400).json({ error: "Booking is already cancelled." })
     }
 
-    // Update booking status
     booking.status = "Cancelled"
     await booking.save()
 
-    // Increase available seats
     const ticket = await Ticket.findById(booking.ticketId)
     if (ticket) {
       ticket.availableSeats += 1

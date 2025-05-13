@@ -1,48 +1,37 @@
-// Get username from localStorage
 const username = localStorage.getItem("loggedInUser") || "User"
 
-// Update places where username is shown
 document.querySelectorAll(".username-placeholder").forEach((el) => {
   el.textContent = username
 })
 
 // Check login status
 if (localStorage.getItem("isLoggedIn") !== "true") {
-  // Not logged in, redirect to home page
-  window.location.href = "index.html" // Change this to your home page file
+  window.location.href = "index.html" 
 }
 
 document.querySelector(".dropdown-item").addEventListener("click", (e) => {
   e.preventDefault()
-
-  // Clear localStorage
   localStorage.clear()
 
-  // Redirect to home (index.html)
   window.location.href = "index.html"
 })
 
 // Page navigation functionality
 document.addEventListener("DOMContentLoaded", () => {
-  // Get all sidebar navigation links
   const navLinks = document.querySelectorAll(".sidebar a[data-page]")
 
-  // Initialize notification state
   const notificationState = {
     notifications: [],
     unreadCount: 0,
     lastChecked: localStorage.getItem("lastNotificationCheck") || 0,
   }
 
-  // Add click event listener to each link
   navLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
       e.preventDefault()
 
-      // Get the page to show from data-page attribute
       const pageToShow = this.getAttribute("data-page")
 
-      // Hide all page sections
       document.querySelectorAll(".page-section").forEach((section) => {
         section.classList.remove("active-section")
       })
@@ -52,10 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (targetSection) {
         targetSection.classList.add("active-section")
 
-        // Load data based on the page
         if (pageToShow === "dashboard") {
           loadNotifications()
-          // Reset unread count when visiting dashboard
           updateNotificationBadge(0)
         } else if (pageToShow === "ledger") {
           loadPaymentHistory()
@@ -66,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Highlight the active navigation link
       navLinks.forEach((navLink) => {
         navLink.classList.remove("active")
       })
@@ -90,15 +76,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const postPaymentBtn = document.getElementById("postPaymentBtn")
   if (postPaymentBtn) {
     postPaymentBtn.addEventListener("click", () => {
-      // Set default date to today
       const today = new Date().toISOString().split("T")[0]
       document.getElementById("paymentDate").value = today
 
-      // Clear form
       document.getElementById("paymentForm").reset()
       document.getElementById("paymentDate").value = today
 
-      // Hide any previous messages
       const messageEl = document.getElementById("paymentMessage")
       messageEl.classList.add("d-none")
 
@@ -106,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (paymentModal) {
         paymentModal.show()
       } else {
-        // Fallback if bootstrap modal isn't available
         paymentModalElement.style.display = "block"
       }
     })
@@ -153,10 +135,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return response.text().then((text) => {
               console.log("Error response text:", text)
               try {
-                // Try to parse as JSON
                 return Promise.reject(JSON.parse(text))
               } catch (e) {
-                // If not JSON, return the text
                 return Promise.reject({ error: text })
               }
             })
@@ -166,15 +146,12 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((data) => {
           console.log("Payment success:", data)
 
-          // Show success message
           messageEl.textContent = "Payment posted successfully!"
           messageEl.classList.remove("d-none", "alert-danger")
           messageEl.classList.add("alert-success")
 
-          // Reload payment history
           loadPaymentHistory()
 
-          // Close modal after 1.5 seconds
           setTimeout(() => {
             if (paymentModal) {
               paymentModal.hide()
@@ -225,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         tableBody.innerHTML = ""
         payments.forEach((payment, index) => {
-          // Format date
           const paymentDate = new Date(payment.date).toLocaleDateString()
 
           // Create status badge
@@ -261,7 +237,6 @@ document.addEventListener("DOMContentLoaded", () => {
       })
   }
 
-  // Function to update notification badge
   function updateNotificationBadge(count) {
     const badge = document.getElementById("notification-badge")
     if (badge) {
@@ -275,16 +250,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Function to play notification sound
-  function playNotificationSound() {
-    const sound = document.getElementById("notification-sound")
-    if (sound) {
-      sound.currentTime = 0
-      sound.play().catch((err) => {
-        console.log("Error playing notification sound:", err)
-      })
-    }
-  }
 
   // Function to check for new notifications
   function checkForNewNotifications() {
@@ -302,18 +267,11 @@ document.addEventListener("DOMContentLoaded", () => {
           // Update unread count
           updateNotificationBadge(notificationState.unreadCount + newNotifications.length)
 
-          // Play sound if we're not on the dashboard page
-          if (!document.getElementById("dashboard-page").classList.contains("active-section")) {
-            playNotificationSound()
-          }
-
-          // If we're on the dashboard, refresh the notifications
           if (document.getElementById("dashboard-page").classList.contains("active-section")) {
             loadNotifications()
           }
         }
 
-        // Update last checked time
         notificationState.lastChecked = Date.now()
         localStorage.setItem("lastNotificationCheck", notificationState.lastChecked)
       })
@@ -327,7 +285,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const notificationsArea = document.getElementById("notifications-area")
     if (!notificationsArea) return
 
-    // Get current filter
     const activeFilter =
       document.querySelector(".notification-controls .btn-group .active").getAttribute("data-filter") || "all"
     let url = `/api/payments/notifications?username=${username}`
@@ -343,10 +300,8 @@ document.addEventListener("DOMContentLoaded", () => {
           return response.text().then((text) => {
             console.log("Error response text:", text)
             try {
-              // Try to parse as JSON
               return Promise.reject(JSON.parse(text))
             } catch (e) {
-              // If not JSON, return the text
               return Promise.reject({ error: text })
             }
           })
@@ -358,13 +313,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // Store notifications in state
         notificationState.notifications = payments
 
-        // Update last checked time
         console.log("Last checked time:", notificationState.lastChecked)
         console.log("Current time:", Date.now())
         notificationState.lastChecked = Date.now()
         localStorage.setItem("lastNotificationCheck", notificationState.lastChecked)
 
-        // Reset unread count when viewing notifications
         updateNotificationBadge(0)
 
         if (payments.length === 0) {
@@ -380,7 +333,6 @@ document.addEventListener("DOMContentLoaded", () => {
             currency: "PKR",
           }).format(payment.amount)
 
-          // Create notification item with appropriate styling based on status
           const statusClass = payment.status === "Completed" ? "success" : "danger"
           const icon = payment.status === "Completed" ? "check-circle" : "times-circle"
 
@@ -411,40 +363,32 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set up notification filter buttons
   document.querySelectorAll(".notification-controls .btn-group button").forEach((btn) => {
     btn.addEventListener("click", function () {
-      // Remove active class from all buttons
       document.querySelectorAll(".notification-controls .btn-group button").forEach((b) => {
         b.classList.remove("active")
       })
 
-      // Add active class to clicked button
       this.classList.add("active")
 
-      // Reload notifications with filter
       loadNotifications()
     })
   })
 
-  // Set up clear all notifications button
   document.getElementById("clear-all-notifications").addEventListener("click", () => {
     if (confirm("Are you sure you want to clear all notifications?")) {
       const notificationsArea = document.getElementById("notifications-area")
 
-      // Add fade-out class to all notifications
       document.querySelectorAll(".notification-item").forEach((item) => {
         item.classList.add("fade-out")
       })
 
-      // Remove all after animation completes
       setTimeout(() => {
         notificationsArea.innerHTML = '<div class="text-center text-muted">No notifications at this time.</div>'
       }, 300)
 
-      // Reset unread count
       updateNotificationBadge(0)
     }
   })
 
-  // Function to load tickets
   function loadTickets() {
     const ticketsContainer = document.getElementById("tickets-container")
     if (!ticketsContainer) return
@@ -485,17 +429,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         ticketsContainer.innerHTML = ""
         tickets.forEach((ticket) => {
-          // Format dates
           const departureDate = new Date(ticket.departure.date).toLocaleDateString()
           const arrivalDate = new Date(ticket.arrival.date).toLocaleDateString()
 
-          // Format price
           const formattedPrice = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "PKR",
           }).format(ticket.price)
 
-          // Create availability badge
           let availabilityBadge = `<span class="badge bg-success">Available (${ticket.availableSeats} seats)</span>`
           if (ticket.availableSeats <= 5) {
             availabilityBadge = `<span class="badge bg-warning">Limited (${ticket.availableSeats} seats)</span>`
@@ -504,7 +445,6 @@ document.addEventListener("DOMContentLoaded", () => {
             availabilityBadge = `<span class="badge bg-danger">Sold Out</span>`
           }
 
-          // Create ticket card
           ticketsContainer.innerHTML += `
             <div class="col-md-6 col-lg-4 mb-4">
               <div class="card bg-dark text-white h-100">
@@ -551,7 +491,6 @@ document.addEventListener("DOMContentLoaded", () => {
           `
         })
 
-        // Add event listeners to book buttons
         document.querySelectorAll(".book-ticket-btn").forEach((btn) => {
           btn.addEventListener("click", function () {
             const ticketId = this.getAttribute("data-ticket-id")
@@ -571,15 +510,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to open booking modal
   function openBookingModal(ticketId) {
-    // Clear form
     document.getElementById("bookingForm").reset()
     document.getElementById("ticketId").value = ticketId
 
-    // Hide any previous messages
     const messageEl = document.getElementById("bookingMessage")
     messageEl.classList.add("d-none")
 
-    // Load ticket details
     fetch(`/api/tickets/${ticketId}`)
       .then((response) => {
         if (!response.ok) {
@@ -594,17 +530,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json()
       })
       .then((ticket) => {
-        // Format dates
         const departureDate = new Date(ticket.departure.date).toLocaleDateString()
         const arrivalDate = new Date(ticket.arrival.date).toLocaleDateString()
 
-        // Format price
         const formattedPrice = new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "PKR",
         }).format(ticket.price)
 
-        // Display ticket details in modal
         document.getElementById("ticketDetails").innerHTML = `
           <h5 class="mb-3">Flight Details</h5>
           <div class="card bg-dark text-white">
@@ -643,11 +576,9 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `
 
-        // Show modal
         if (bookingModal) {
           bookingModal.show()
         } else {
-          // Fallback if bootstrap modal isn't available
           bookingModalElement.style.display = "block"
         }
       })
@@ -668,7 +599,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const messageEl = document.getElementById("bookingMessage")
 
-      // Validate form
       if (!passengerName || !passengerEmail || !passengerPhone) {
         messageEl.textContent = "Please fill in all required fields."
         messageEl.classList.remove("d-none", "alert-success")
@@ -676,8 +606,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return
       }
 
-
-      // Submit booking to API
       fetch("/api/bookings", {
         method: "POST",
         headers: {
@@ -705,12 +633,10 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then((data) => {
 
-          // Show success message
           messageEl.textContent = "Booking confirmed successfully!"
           messageEl.classList.remove("d-none", "alert-danger")
           messageEl.classList.add("alert-success")
 
-          // Close modal after 1.5 seconds and reload tickets
           setTimeout(() => {
             if (bookingModal) {
               bookingModal.hide()
@@ -718,7 +644,6 @@ document.addEventListener("DOMContentLoaded", () => {
               bookingModalElement.style.display = "none"
             }
 
-            // Reload tickets and bookings
             loadTickets()
             loadBookings()
           }, 1500)
@@ -774,12 +699,10 @@ document.addEventListener("DOMContentLoaded", () => {
         bookings.forEach((booking) => {
           const ticket = booking.ticketId
 
-          // Format dates
           const bookingDate = new Date(booking.bookingDate).toLocaleDateString()
           const departureDate = new Date(ticket.departure.date).toLocaleDateString()
           const arrivalDate = new Date(ticket.arrival.date).toLocaleDateString()
 
-          // Create status badge
           let statusBadgeClass = "bg-success"
           if (booking.status === "Pending") {
             statusBadgeClass = "bg-warning"
@@ -787,7 +710,6 @@ document.addEventListener("DOMContentLoaded", () => {
             statusBadgeClass = "bg-danger"
           }
 
-          // Create booking card
           bookingsContainer.innerHTML += `
             <div class="col-md-6 mb-4">
               <div class="card bg-dark text-white">
@@ -883,7 +805,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         alert("Booking cancelled successfully.")
 
-        // Reload bookings and tickets
         loadBookings()
         loadTickets()
       })
@@ -893,7 +814,6 @@ document.addEventListener("DOMContentLoaded", () => {
       })
   }
 
-  // Load data for active page on initial load
   if (document.getElementById("dashboard-page")?.classList.contains("active-section")) {
     loadNotifications()
   } else if (document.getElementById("ledger-page")?.classList.contains("active-section")) {
@@ -904,6 +824,5 @@ document.addEventListener("DOMContentLoaded", () => {
     loadBookings()
   }
 
-  // Set up periodic check for new notifications (every 30 seconds)
   setInterval(checkForNewNotifications, 30000)
 })

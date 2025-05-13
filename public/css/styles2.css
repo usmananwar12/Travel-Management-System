@@ -161,7 +161,6 @@ h2 {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* Modal styling */
 .modal-content {
   background-color: #1a1c23 !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -231,10 +230,8 @@ h2 {
   margin-top: 20px;
   font-size: 16px;
   color: #cccccc;
-  /* light gray text for good contrast */
   line-height: 1.6;
   max-width: 800px;
-  /* so text doesn't stretch too wide */
   padding-left: 20px;
 }
 
@@ -242,7 +239,6 @@ h2 {
   padding-bottom: 5px;
 }
 
-/* Custom styles for the navbar toggler */
 .navbar-toggler {
   border: none;
   padding: 0.25rem 0.5rem;
@@ -254,7 +250,6 @@ h2 {
   outline: none;
 }
 
-/* Adjust sidebar margin on mobile */
 @media (max-width: 767.98px) {
   #sidebarMenu .d-flex {
     margin-top: 10px !important;
@@ -311,7 +306,7 @@ h2 {
 /* Notification controls */
 .notification-controls {
   display: flex;
-  flex-wrap: wrap; /* allow wrap on small screens */
+  flex-wrap: wrap; 
   align-items: center;
   gap: 0.5rem;
   margin-top: 0.5rem;
@@ -336,11 +331,6 @@ h2 {
   background-color: rgba(220, 53, 69, 0.1);
 }
 
-/* Mark read button */
-.mark-read-btn {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
 
 .notification-item:hover .mark-read-btn {
   opacity: 1;
@@ -352,7 +342,6 @@ h2 {
   padding: 0.25rem 0.4rem;
 }
 
-/* Responsive adjustments */
 @media (max-width: 767px) {
   .d-flex.justify-content-between {
     flex-direction: column;
